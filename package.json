@@ -1,0 +1,19 @@
+{
+  "name": "chai-backend",
+  "version": "1.0.0",
+  "description": "Video Hosting Backend following Hitesh Choudhary",
+  "main": "index.js",
+  "type":"module",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "author": "Vishal Shinde",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
