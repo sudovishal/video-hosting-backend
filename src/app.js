@@ -8,10 +8,10 @@ app.use(
     credentials: true,
   })
 );
-// learn more about cors- assignment
-app.use(express.json({limit: "16kb"})
-);
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.use(cookieParser())
+// learn more about cors and their options- assignment
+
+app.use(express.json({ limit: "16kb" })); // to handle json data
+app.use(express.urlencoded({ extended: true, limit: "16kb" })); // to handle url parameters
+app.use(express.static("public")); // to serve static files
+app.use(cookieParser()); //  server se joh user ka browser hai uski cookies access aur set kar paau
 export { app };
