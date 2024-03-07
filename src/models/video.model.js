@@ -1,47 +1,43 @@
-import mongoose, { Schema } from "mongoose";
-
-const userSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-    index: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
-  fullname: {
-    type: String,
-    required: true,
-    trim: true,
-    index: true,
-  },
-  avatar: {
-    type: String, // cloudinary url
-    required: true,
-  },
-  coverImage: {
-    type: String, // cloudinary url
-  },
-  watchHistory: [
+import mongoose, {Schema} from "mongoose";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2"
+const videoSchema = new Schema(
     {
-      type: Schema.Types.ObjectId,
-      ref: "Video",
+    videoFile: {
+        type: String,// cloudinary url
+        required: true
+    }, 
+    thumbnail: {
+        type: String, // cloudinary url
+        required: true
     },
-  ],
-  password: {
-    type: String,
-    required: [true, 'Password is required']
-  },
-  refreshToken: {
-    
-  }
-});
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    duration: {
+        type: Number,
+        required: true
+    },
+    views: {
+        type: Number,
+        default: 0
+    },
+    isPublished: {
+        type: Boolean,
+        default: true
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
+}, {
+    timestamps: true
+}
+);
 
-export const User = mongoose.Model("User", userSchema);
+videoSchema.plugin(mongooseAggregatePaginate)
+export const Video = mongoose.model("Video", videoSchema)
