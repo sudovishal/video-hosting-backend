@@ -1,12 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+
 const userSchema = new Schema(
   {
     username: {
       type: String,
       required: true,
-      unique: true,
+      unique: true, 
       lowercase: true,
       trim: true,
       index: true,
@@ -58,15 +59,17 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
+  // console.log(password, this.password);
   return await bcrypt.compare(password, this.password);
 };
 
 userSchema.methods.generateAccessToken = function () {
+  console.log(process.env.ACCESS_TOKEN_EXPIRY);
   return jwt.sign(
     {
       _id: this._id,
-      username: this.username,
       email: this.email,
+      username: this.username,
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
@@ -74,19 +77,17 @@ userSchema.methods.generateAccessToken = function () {
     }
   );
 };
-
 userSchema.methods.generateRefreshToken = function () {
-   return jwt.sign(
+  return jwt.sign(
     {
       _id: this._id,
-      username: this.username,
-      email: this.email,
     },
     process.env.REFRESH_TOKEN_SECRET,
     {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY
     }
   );
 };
+
 
 export const User = mongoose.model("User", userSchema);
