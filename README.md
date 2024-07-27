@@ -23,3 +23,5 @@ For most of the database schemas, have clarity on
 Fundamentally, what are we supposed to do in a controller, What will user do when they arrive at the route, they take it(get) or give it(post), save(patch) and what is he requesting.
 
 For line of code inside functions. question why it used the way it is. Better practices.
+<!-- TODO  Solving the assignments https://github.com/hiteshchoudhary/chai-backend/tree/main/src/controllers in a separate branch- assignment -->
+<!-- TODO Implementing some additional functionalities- feature branch-->
