@@ -50,21 +50,22 @@ const userSchema = new Schema(
 );
 
 // hooks
-// arrow function se this ka context pata nahi hota
+// arrow function mei this ka context pata nahi hota
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (next) { 
+// While writing middlewares, next flag is used to pass the control to the next middleware/route
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
-
+// custom methods for mongoose middlewares
 userSchema.methods.isPasswordCorrect = async function (password) {
   // console.log(password, this.password);
   return await bcrypt.compare(password, this.password);
 };
 
 userSchema.methods.generateAccessToken = function () {
-  console.log(process.env.ACCESS_TOKEN_EXPIRY);
+  // console.log(process.env.ACCESS_TOKEN_EXPIRY);
   return jwt.sign(
     {
       _id: this._id,
@@ -73,18 +74,21 @@ userSchema.methods.generateAccessToken = function () {
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+      // expiresIn: "process.env.ACCESS_TOKEN_EXPIRY",
+      expiresIn: "1d",
     }
   );
 };
 userSchema.methods.generateRefreshToken = function () {
+  
   return jwt.sign(
     {
       _id: this._id,
     },
     process.env.REFRESH_TOKEN_SECRET,
     {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+      // expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+      expiresIn:"7d"
     }
   );
 };
