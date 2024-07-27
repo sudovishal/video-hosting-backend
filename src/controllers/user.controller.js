@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
 const generateAccessAndRefreshTokens = async (userId) => {
@@ -176,8 +177,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: {
-        refreshToken: undefined,
+      $unset: {
+        refreshToken: 1, // this removes the field from document
       },
     },
     {
@@ -403,6 +404,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         fullname: 1,
         username: 1,
         channelsSubscribedToCount: 1,
+        subscribersCount: 1,
         avatar: 1,
         coverImage: 1,
         email: 1,
@@ -419,7 +421,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, channe[0], "User Channel fetched successfully"));
+    .json(new ApiResponse(200, channel[0], "User Channel fetched successfully"));
 });
 
 const getWatchHistory = asyncHandler(async (req, res) => {
@@ -467,9 +469,11 @@ const getWatchHistory = asyncHandler(async (req, res) => {
 
   return res
   .status(200)
-  .json(new ApiResponse(200, user[0].WatchHistory, "Watch History fetched successfully"))
+  .json(new ApiResponse(200, user[0].watchHistory, "Watch History fetched successfully"))
 });
 
+
+// TODO Implement Send Email Verification for Resetting the password
 export {
   registerUser,
   loginUser,
