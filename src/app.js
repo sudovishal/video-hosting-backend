@@ -16,10 +16,11 @@ app.use(express.static("public")); // to serve static files
 app.use(cookieParser()); // server se joh user ka browser hai uski cookies access aur set kar paau
 
 //routes import
-import userRouter from './routes/user.routes.js'
-
+import userRouter from './routes/user.routes.js';
+import tweetRouter from './routes/tweet.routes.js';
 // routes declaration
 app.use("/api/v1/users", userRouter)
+app.use("/api/v1/forums", tweetRouter)
 
 // http://localhost:8000/api/v1/users/register
 export { app };

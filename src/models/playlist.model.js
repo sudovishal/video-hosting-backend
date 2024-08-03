@@ -16,12 +16,12 @@ const playlistSchema = new Schema(
       },
     ],
     owner: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   {
     timestamps: true,
   }
 );
-export const Playlist = new mongoose.Model("Playlist", playlistSchema);
+export const Playlist = new mongoose.model("Playlist", playlistSchema);
